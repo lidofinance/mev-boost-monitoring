@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/lidofinance/go-template/internal/pkg/users"
-	usersUsecase "github.com/lidofinance/go-template/internal/pkg/users/usecase"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users"
+	usersUsecase "github.com/lidofinance/mev-boost-monitoring/internal/pkg/users/usecase"
 )
 
 type usecase struct {

@@ -7,8 +7,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"github.com/lidofinance/go-template/internal/http/handlers/health"
-	userexample "github.com/lidofinance/go-template/internal/http/handlers/user_example"
+	"github.com/lidofinance/mev-boost-monitoring/internal/http/handlers/health"
+	userexample "github.com/lidofinance/mev-boost-monitoring/internal/http/handlers/user_example"
 )
 
 func (app *App) RegisterRoutes(router *mux.Router) {

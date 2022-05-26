@@ -3,7 +3,7 @@ package users
 import (
 	"context"
 
-	"github.com/lidofinance/go-template/internal/pkg/users/entity"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users/entity"
 )
 
 type Usecase interface {

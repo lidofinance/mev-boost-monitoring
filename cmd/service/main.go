@@ -8,11 +8,11 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/lidofinance/go-template/internal/app/server"
-	"github.com/lidofinance/go-template/internal/connectors/logger"
-	"github.com/lidofinance/go-template/internal/connectors/metrics"
-	"github.com/lidofinance/go-template/internal/connectors/postgres"
-	"github.com/lidofinance/go-template/internal/env"
+	"github.com/lidofinance/mev-boost-monitoring/internal/app/server"
+	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/logger"
+	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/metrics"
+	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/postgres"
+	"github.com/lidofinance/mev-boost-monitoring/internal/env"
 )
 
 func main() {

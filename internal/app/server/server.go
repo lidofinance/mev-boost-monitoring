@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/lidofinance/go-template/internal/connectors/metrics"
+	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/metrics"
 )
 
 const (

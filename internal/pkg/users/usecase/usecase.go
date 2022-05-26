@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"github.com/lidofinance/go-template/internal/pkg/users"
-	"github.com/lidofinance/go-template/internal/pkg/users/entity"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users/entity"
 )
 
 type usecase struct {

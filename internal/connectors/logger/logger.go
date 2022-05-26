@@ -7,7 +7,7 @@ import (
 	"github.com/evalphobia/logrus_sentry"
 	"github.com/sirupsen/logrus"
 
-	"github.com/lidofinance/go-template/internal/env"
+	"github.com/lidofinance/mev-boost-monitoring/internal/env"
 )
 
 var (

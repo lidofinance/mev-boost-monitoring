@@ -1,4 +1,4 @@
-module github.com/lidofinance/go-template
+module github.com/lidofinance/mev-boost-monitoring
 
 go 1.18
 

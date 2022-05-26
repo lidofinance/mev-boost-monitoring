@@ -3,8 +3,8 @@ package server
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/lidofinance/go-template/internal/pkg/users"
-	userRepo "github.com/lidofinance/go-template/internal/pkg/users/repository"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users"
+	userRepo "github.com/lidofinance/mev-boost-monitoring/internal/pkg/users/repository"
 )
 
 type repository struct {

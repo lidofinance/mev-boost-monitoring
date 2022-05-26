@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/lidofinance/go-template/internal/pkg/users"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users"
 )
 
 type Handler struct {
