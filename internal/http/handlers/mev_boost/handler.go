@@ -1,10 +1,10 @@
 package mev_boost
 
 import (
-	"net/http"
-
+	"github.com/flashbots/go-boost-utils/types"
 	"github.com/gin-gonic/gin"
 
+	"github.com/bxcodec/faker/v3"
 	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost"
 )
 
@@ -18,20 +18,29 @@ func New(mevUC mev_boost.Usecase) *Handler {
 	}
 }
 
-func (h *Handler) Handler(c *gin.Context) {
-	var In struct {
-		Message string `json:"message"`
-		Nick    string `json:"nick"`
-	}
+func (h *Handler) HandlerPost(c *gin.Context) {
+	var In types.GetHeaderResponse
 
-	if parseErr := c.BindJSON(&In); parseErr != nil {
-		c.JSON(http.StatusBadRequest, `Dad request`)
+	_ = faker.FakeData(&In)
 
-		return
+	err := h.mevUC.Create(c, In)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": "bad request",
+		})
 	}
 	c.JSON(200, gin.H{
-		"status":  "posted",
-		"message": In.Message,
-		"nick":    In.Nick,
+		"status": "posted",
 	})
+}
+
+func (h *Handler) HandlerGet(c *gin.Context) {
+	out, err := h.mevUC.Get(c)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": "bad request",
+		})
+	}
+
+	c.JSON(200, out)
 }

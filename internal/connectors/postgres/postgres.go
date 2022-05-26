@@ -27,7 +27,7 @@ func Connect(config env.PgConfig) (*sqlx.DB, error) {
 
 	conf, parseErr := pgx.ParseConfig(
 		fmt.Sprintf(`host=%s port=%d user=%s password=%s dbname=%s sslmode=%s`,
-			config.Host, config.Port, config.Username, config.Password, config.Schema, config.SslMode),
+			config.Host, config.Port, config.Username, config.Password, config.Database, config.SslMode),
 	)
 
 	if parseErr != nil {

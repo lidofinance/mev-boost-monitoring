@@ -17,7 +17,8 @@ func (app *App) RegisterRoutes(router *gin.Engine) {
 	router.GET("/health", health.New().Handler)
 	router.GET("/metrics", app.prometheusHandler())
 
-	router.POST("/payload", mev_boost.New(app.usecase.MevBoost).Handler)
+	router.POST("/payload", mev_boost.New(app.usecase.MevBoost).HandlerPost)
+	router.GET("/payload", mev_boost.New(app.usecase.MevBoost).HandlerGet)
 }
 
 func (app *App) prometheusHandler() gin.HandlerFunc {

@@ -2,11 +2,13 @@ package repository
 
 import (
 	"context"
+	"encoding/json"
 
+	"github.com/flashbots/go-boost-utils/types"
 	"github.com/jmoiron/sqlx"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost/entity"
 
 	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost"
-	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost/entity"
 )
 
 type repo struct {
@@ -19,20 +21,24 @@ func New(db *sqlx.DB) mev_boost.Repository {
 	}
 }
 
-func (r *repo) Get(ctx context.Context, ID int64) (*entity.Payload, error) {
-	var out entity.Payload
-	err := r.db.GetContext(ctx, &out, `select * from users where id = $1`, ID)
+func (r *repo) Create(ctx context.Context, headerPayload types.GetHeaderResponse) error {
+	data, _ := json.Marshal(*headerPayload.Data)
 
-	return &out, err
-}
-
-func (r *repo) Create(ctx context.Context) (*int64, error) {
-	var ID int64
-
-	query := `insert into users () returning id;`
-	if createUserErr := r.db.GetContext(ctx, &ID, query); createUserErr != nil {
-		return nil, createUserErr
+	query := `insert into headers (version, data) values ($1, $2)`
+	if _, createUserErr := r.db.ExecContext(ctx, query, headerPayload.Version, string(data)); createUserErr != nil {
+		return createUserErr
 	}
 
-	return &ID, nil
+	return nil
+}
+
+func (r *repo) Get(ctx context.Context) ([]entity.Header, error) {
+	var out []entity.Header
+
+	query := `select * from headers limit 10`
+	if err := r.db.SelectContext(ctx, &out, query); err != nil {
+		return nil, err
+	}
+
+	return out, nil
 }
