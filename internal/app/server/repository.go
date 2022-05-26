@@ -3,17 +3,17 @@ package server
 import (
 	"github.com/jmoiron/sqlx"
 
-	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users"
-	userRepo "github.com/lidofinance/mev-boost-monitoring/internal/pkg/users/repository"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost"
+	mevBoostRepo "github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost/repository"
 )
 
 type repository struct {
-	User users.Repository
+	MevBoost mev_boost.Repository
 }
 
 //nolint
 func Repository(db *sqlx.DB) *repository {
 	return &repository{
-		User: userRepo.New(db),
+		MevBoost: mevBoostRepo.New(db),
 	}
 }

@@ -1,8 +1,9 @@
 package health
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Handler struct{}
@@ -11,14 +12,10 @@ func New() *Handler {
 	return &Handler{}
 }
 
-func (h *Handler) Handler(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) Handler(c *gin.Context) {
 	type resp struct {
 		Status string `json:"status"`
 	}
 
-	jsonResponse, _ := json.Marshal(resp{Status: `ok`})
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(jsonResponse)
+	c.JSON(http.StatusOK, resp{Status: `ok`})
 }

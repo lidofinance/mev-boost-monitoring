@@ -1,21 +1,29 @@
 package server
 
 import (
-	"net/http"
+	"log"
 
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/lidofinance/mev-boost-monitoring/internal/http/handlers/health"
-	userexample "github.com/lidofinance/mev-boost-monitoring/internal/http/handlers/user_example"
+	"github.com/lidofinance/mev-boost-monitoring/internal/http/handlers/mev_boost"
 )
 
-func (app *App) RegisterRoutes(router *mux.Router) {
-	handlers.RecoveryHandler()(router)
+func (app *App) RegisterRoutes(router *gin.Engine) {
+	router.Use(gin.LoggerWithWriter(log.Writer()))
+	router.Use(gin.Recovery())
 
-	router.HandleFunc("/health", health.New().Handler).Methods(http.MethodGet)
-	router.Handle("/metrics", promhttp.HandlerFor(app.Metrics.Prometheus, promhttp.HandlerOpts{})).Methods(http.MethodGet)
+	router.GET("/health", health.New().Handler)
+	router.GET("/metrics", app.prometheusHandler())
 
-	router.HandleFunc("/example", userexample.New(app.usecase.User).Handler).Methods(http.MethodGet)
+	router.POST("/payload", mev_boost.New(app.usecase.MevBoost).Handler)
+}
+
+func (app *App) prometheusHandler() gin.HandlerFunc {
+	h := promhttp.HandlerFor(app.Metrics.Prometheus, promhttp.HandlerOpts{})
+
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
+	}
 }

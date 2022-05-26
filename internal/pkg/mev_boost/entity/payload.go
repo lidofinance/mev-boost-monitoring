@@ -1,5 +1,5 @@
 package entity
 
-type User struct {
+type Payload struct {
 	ID int64 `db:"id"`
 }

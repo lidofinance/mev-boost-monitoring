@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/lidofinance/mev-boost-monitoring/internal/app/server"
@@ -41,7 +41,7 @@ func main() {
 
 	log.Info(fmt.Sprintf(`started %s application`, cfg.AppConfig.Name))
 
-	r := mux.NewRouter()
+	r := gin.Default()
 	metrics := metrics.New(prometheus.NewRegistry(), cfg.AppConfig.Name, cfg.AppConfig.Env)
 
 	repo := server.Repository(db)

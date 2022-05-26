@@ -5,22 +5,22 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users"
-	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/users/entity"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost"
+	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost/entity"
 )
 
 type repo struct {
 	db *sqlx.DB
 }
 
-func New(db *sqlx.DB) users.Repository {
+func New(db *sqlx.DB) mev_boost.Repository {
 	return &repo{
 		db: db,
 	}
 }
 
-func (r *repo) Get(ctx context.Context, ID int64) (*entity.User, error) {
-	var out entity.User
+func (r *repo) Get(ctx context.Context, ID int64) (*entity.Payload, error) {
+	var out entity.Payload
 	err := r.db.GetContext(ctx, &out, `select * from users where id = $1`, ID)
 
 	return &out, err
