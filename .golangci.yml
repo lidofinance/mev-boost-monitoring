@@ -1,0 +1,85 @@
+# More info on config here: https://github.com/golangci/golangci-lint#config-file
+run:
+  deadline: 60s
+  issues-exit-code: 1
+  tests: true
+  skip-dirs:
+    - bin
+    - vendor
+    - var
+    - tmp
+    - internal/generated
+    - tools
+    - db
+    - deployment
+  skip-files:
+    - ".*_test.go$"
+  modules-download-mode: vendor
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0
+  dupl:
+    threshold: 150
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  goimports:
+    # put imports beginning with prefix after 3rd-party packages;
+    # it's a comma-separated list of prefixes
+    local-prefixes: go.avito.ru/au/service-booking
+
+linters:
+  disable-all: true
+  enable:
+    - golint
+    - govet
+    - errcheck
+    - deadcode
+    - structcheck
+    - varcheck
+    - ineffassign
+    - typecheck
+    - dupl
+    - goconst
+    - gosec
+    - goimports
+    - megacheck
+    - staticcheck
+    - unused
+    - bodyclose
+    - gosimple
+    - rowserrcheck
+    - interfacer
+    - unconvert
+    - goconst
+    - gocyclo
+    - gocognit
+    - gofmt
+    - prealloc
+
+issues:
+  exclude-use-default: false
+  exclude:
+    # _ instead of err checks
+    - G104
+    # for "public interface + private struct implementation" cases only!
+    - exported func * returns unexported type *, which can be annoying to use
+    # can be removed in the development phase
+    - (comment on exported (method|function|type|const)|should have( a package)? comment|comment should be of the form)
+    # not for the active development - can be removed in the stable phase
+    - should have a package comment, unless it's in another file for this package
+    - don't use an underscore in package name
+    # errcheck: Almost all programs ignore errors on these functions and in most cases it's ok
+    - Error return value of .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?|.*printf?|os\.(Un)?Setenv|.*Rollback). is not checked
+    - should check returned error before deferring
+    - lines are duplicate of `internal/config/geo_.*?`
+    - "not declared by package utf8"
+    - "unicode/utf8/utf8.go"
