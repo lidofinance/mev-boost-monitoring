@@ -1,28 +1,18 @@
 package entity
 
 import (
-	"database/sql/driver"
-	"encoding/json"
-	"errors"
+	"time"
 )
 
-type Data map[string]interface{}
-
-type Header struct {
-	ID      int64  `json:"id" db:"id"`
-	Version string `json:"version" db:"version"`
-	Attrs   Data   `json:"data" db:"data"`
-}
-
-func (a Data) Value() (driver.Value, error) {
-	return json.Marshal(a)
-}
-
-func (a *Data) Scan(value interface{}) error {
-	b, ok := value.([]byte)
-	if !ok {
-		return errors.New("type assertion to []byte failed")
-	}
-
-	return json.Unmarshal(b, &a)
+type RelayPayload struct {
+	ID               uint64    `db:"slot" json:"id"`
+	SlotNumber       uint64    `db:"slot" json:"slot_number"`
+	BlockHash        string    `db:"block_hash" json:"block_hash"`
+	BlockNumber      uint64    `db:"block_number" json:"block_number"`
+	FeeRecipient     string    `db:"fee_recipient" json:"fee_recipient"`
+	TransactionsRoot string    `db:"transactions_root" json:"transactions_root"`
+	Pubkey           string    `db:"pubkey" json:"pubkey"`
+	Signature        string    `db:"signature" json:"signature"`
+	RelayAddr        string    `db:"relay_adr" json:"relay_addr"`
+	RelayTimestamp   time.Time `db:"timestamp" json:"relay_timestamp"`
 }

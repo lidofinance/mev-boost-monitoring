@@ -1,13 +1,17 @@
-version: '3.7'
+version: '3.8'
 
 services:
   postgres:
     image: postgres:14-alpine
-    hostname: mev-boost-monitoring_postgres
-    container_name: mev-boost-monitoring_postgres
+    hostname: mev-boost-monitoring-postgres
+    container_name: mev-boost-monitoring-postgres
     restart: always
+    user: "${UID_GID}"
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: master
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./storage/postgresql:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"

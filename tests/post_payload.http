@@ -1,0 +1,15 @@
+### Send POST request with json body
+POST {{schema}}{{url}}/payload
+Content-Type: application/json
+
+{
+  "slot": 1,
+  "block_hash": "0xc3cda31daa04fde759551874bdaa4aeb6bf96b06fcc91d95f34b5f900036cd25",
+  "block_number": 26,
+  "fee_recipient": "0x1337000000000000000000000000000000000000",
+  "transactions_root": "0x7ffe241ea60187fdb0187bfa22de35d1f9bed7ab061d9401fd47e34a54fbede1",
+  "pubkey": "0x95dd2c97e64b9e0638cb22c2f9c323d3e41e143eaaa29b221692278cb95d2260f6b31483ee92428c80d40b291483be37",
+  "signature": "0x94a86050c739f1a5b8a8cf2f680321a99051bf0806433a0d945858ea513735b353714b8f33503060b31ee9f3392eb50919ffb40a7f6cb0fe18113c848b10bf67295f9d679d245f469bdbc5ddffb8df0906c9e73aff0d373159003cb6ab695a3b",
+  "relay_adr": "http://localhost.test",
+  "timestamp": "1655181072"
+}

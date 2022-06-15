@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 
-	"github.com/flashbots/go-boost-utils/types"
 	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost"
 	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost/entity"
 )
@@ -18,10 +17,10 @@ func New(repo mev_boost.Repository) mev_boost.Usecase {
 	}
 }
 
-func (u *usecase) Create(ctx context.Context, headerPayload types.GetHeaderResponse) error {
-	return u.repo.Create(ctx, headerPayload)
+func (u *usecase) Create(ctx context.Context, in *entity.RelayPayload) error {
+	return u.repo.Create(ctx, in)
 }
 
-func (u *usecase) Get(ctx context.Context) ([]entity.Header, error) {
+func (u *usecase) Get(ctx context.Context) ([]entity.RelayPayload, error) {
 	return u.repo.Get(ctx)
 }

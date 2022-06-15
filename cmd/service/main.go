@@ -6,13 +6,12 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus"
-
 	"github.com/lidofinance/mev-boost-monitoring/internal/app/server"
 	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/logger"
 	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/metrics"
 	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/postgres"
 	"github.com/lidofinance/mev-boost-monitoring/internal/env"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 func main() {
