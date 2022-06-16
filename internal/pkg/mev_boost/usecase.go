@@ -8,5 +8,5 @@ import (
 
 type Usecase interface {
 	Create(ctx context.Context, in *entity.RelayPayload) error
-	Get(ctx context.Context) ([]entity.RelayPayload, error)
+	Paginated(ctx context.Context, currentPage, perPage uint64) (*entity.RelayPayloadPaginated, error)
 }

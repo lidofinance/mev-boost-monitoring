@@ -25,7 +25,7 @@ func (app *App) RegisterRoutes(router *gin.Engine) {
 	router.GET("/metrics", app.prometheusHandler())
 
 	router.POST("/payload", mev_boost.New(app.usecase.MevBoost).HandlerPost)
-	router.GET("/payload", mev_boost.New(app.usecase.MevBoost).HandlerGet)
+	router.GET("/payload/:current_page/:per_page", mev_boost.New(app.usecase.MevBoost).HandlerGet)
 }
 
 func (app *App) prometheusHandler() gin.HandlerFunc {

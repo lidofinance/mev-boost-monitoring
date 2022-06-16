@@ -2,6 +2,7 @@ package mev_boost
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lidofinance/mev-boost-monitoring/internal/transport/http/dto"
@@ -57,10 +58,39 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 }
 
 func (h *Handler) HandlerGet(c *gin.Context) {
-	out, err := h.mevUC.Get(c)
+	currentPageIn := c.Param("current_page")
+	perPageIn := c.Param("per_page")
+
+	currentPage, err := strconv.ParseUint(currentPageIn, 10, 32)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"msg": "bad request",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg": http.StatusText(http.StatusBadRequest),
+		})
+
+		return
+	}
+
+	if currentPage <= 0 {
+		currentPage = 1
+	}
+
+	perPage, err := strconv.ParseUint(perPageIn, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg": http.StatusText(http.StatusBadRequest),
+		})
+
+		return
+	}
+
+	if perPage <= 0 {
+		perPage = 10
+	}
+
+	out, err := h.mevUC.Paginated(c, currentPage, perPage)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"msg": http.StatusText(http.StatusInternalServerError),
 		})
 	}
 

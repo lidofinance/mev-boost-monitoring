@@ -7,8 +7,8 @@ create table if not exists relay_payloads
     fee_recipient     text      NOT NULL,
     transactions_root text      NOT NULL,
     pubkey            text      NOT NULL,
-    Signature         text      NOT NULL,
-    relay_addr        text      NOT NULL,
+    signature         text      NOT NULL,
+    relay_adr         text      NOT NULL,
     relay_timestamp   timestamp not null,
     created_at        timestamp default current_timestamp
 );

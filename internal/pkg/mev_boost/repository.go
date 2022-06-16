@@ -8,5 +8,6 @@ import (
 
 type Repository interface {
 	Create(ctx context.Context, in *entity.RelayPayload) error
-	Get(ctx context.Context) ([]entity.RelayPayload, error)
+	TotalRelays(ctx context.Context) (uint64, error)
+	Paginated(ctx context.Context, offset, limit uint64) ([]entity.RelayPayload, error)
 }

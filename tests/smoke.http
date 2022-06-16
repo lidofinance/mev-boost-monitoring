@@ -1,4 +1,3 @@
-### Send POST request with json body
 POST {{schema}}{{url}}/payload
 Content-Type: application/json
 
@@ -13,3 +12,8 @@ Content-Type: application/json
   "relay_adr": "http://localhost.test",
   "timestamp": "1655181072"
 }
+###
+
+GET {{schema}}{{url}}/payload/1/5
+Content-Type: application/json
+
