@@ -45,6 +45,16 @@ migrate:
 up:
 	UID_GID="$(id -u):$(id -g)" docker-compose -f docker-compose.yml up -d
 
+.PHONY: up-rebuild
+up-rebuild:
+	UID_GID="$(id -u):$(id -g)" docker-compose -f docker-compose.yml up -d --build mev-boost-collector
+
+
 .PHONY: down
 down:
 	UID_GID="$(id -u):$(id -g)" docker-compose -f docker-compose.yml down
+
+
+.PHONY: run
+run:
+	make up && make migrate

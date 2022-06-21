@@ -24,7 +24,6 @@ const (
 )
 
 func Connect(config env.PgConfig) (*sqlx.DB, error) {
-
 	conf, parseErr := pgx.ParseConfig(
 		fmt.Sprintf(`host=%s port=%d user=%s password=%s dbname=%s sslmode=%s`,
 			config.Host, config.Port, config.Username, config.Password, config.Database, config.SslMode),
@@ -39,12 +38,14 @@ func Connect(config env.PgConfig) (*sqlx.DB, error) {
 		"standard_conforming_strings": "on",
 	}
 
+	var pingErr error
 	onceDefaultClient.Do(func() {
 		db = sqlx.NewDb(stdlib.OpenDB(*conf), "pgx")
 
 		// force a connection and test that it worked
-		err := db.Ping()
-		if err != nil {
+
+		if err := db.Ping(); err != nil {
+			pingErr = err
 			return
 		}
 
@@ -52,5 +53,5 @@ func Connect(config env.PgConfig) (*sqlx.DB, error) {
 		db.SetMaxIdleConns(MaxIdleConns)
 	})
 
-	return db, nil
+	return db, pingErr
 }

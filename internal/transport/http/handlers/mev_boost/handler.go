@@ -28,7 +28,8 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 	// Some Secret Key - for mvp - it's redundant
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": err.Error(),
+			"msg": `ShouldBindJSON err`,
+			"err": err.Error(),
 		})
 
 		return
@@ -37,7 +38,8 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 	in, err := req.Validate()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": err.Error(),
+			"msg": `Validation err`,
+			"err": err.Error(),
 		})
 
 		return
@@ -45,8 +47,8 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 
 	if createErr := h.mevUC.Create(c, in); createErr != nil {
 		// TODO: log error
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": "bad request",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"msg": createErr.Error(),
 		})
 
 		return

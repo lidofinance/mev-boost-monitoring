@@ -42,6 +42,7 @@ func Read(ctx context.Context) (*Config, error) {
 	var err error
 
 	onceDefaultClient.Do(func() {
+		viper.SetConfigType("yml")
 		viper.SetConfigName(".env")
 		viper.AddConfigPath(".")
 
