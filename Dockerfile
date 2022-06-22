@@ -21,7 +21,6 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app/
 
 COPY --from=builder /go/src/app/bin ./bin
-COPY --from=builder /go/src/app/.env.yml /app
 COPY --from=builder /go/src/app/db/migrations /app/db/migrations
 
 EXPOSE 8080

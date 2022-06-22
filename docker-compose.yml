@@ -16,9 +16,10 @@ services:
         condition: service_healthy
     links:
       - "postgres:postgres"
-    # command: [ "./bin/migrator" ]
     networks:
       - friendship
+    env_file:
+      - .env
 
   postgres:
     image: postgres:14-alpine

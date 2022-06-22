@@ -15,7 +15,6 @@ type Config struct {
 type AppConfig struct {
 	Name      string
 	Env       string
-	URL       string
 	Port      uint
 	LogFormat string
 	LogLevel  string
@@ -42,32 +41,35 @@ func Read(ctx context.Context) (*Config, error) {
 	var err error
 
 	onceDefaultClient.Do(func() {
-		viper.SetConfigType("yml")
-		viper.SetConfigName(".env")
+		viper.SetConfigType("env")
 		viper.AddConfigPath(".")
+		viper.SetConfigFile(".env")
 
-		if err = viper.ReadInConfig(); err != nil {
-			return
+		// viper.AutomaticEnv()
+		if viperErr := viper.ReadInConfig(); err != nil {
+			if _, ok := viperErr.(viper.ConfigFileNotFoundError); !ok {
+				err = viperErr
+				return
+			}
 		}
 
 		cfg = Config{
 			AppConfig: AppConfig{
-				Name:      viper.GetString("app.name"),
-				Env:       viper.GetString("app.env"),
-				URL:       viper.GetString("app.url"),
-				Port:      viper.GetUint("app.port"),
-				LogFormat: viper.GetString("app.logFormat"),
-				LogLevel:  viper.GetString("app.logLevel"),
-				SentryDsn: viper.GetString("app.sentryDsn"),
+				Name:      viper.GetString("APP_NAME"),
+				Env:       viper.GetString("ENV"),
+				Port:      viper.GetUint("PORT"),
+				LogFormat: viper.GetString("LOG_FORMAT"),
+				LogLevel:  viper.GetString("LOG_LEVEL"),
+				SentryDsn: viper.GetString("SENTRY_DSN"),
 			},
 			PgConfig: PgConfig{
-				Port:     viper.GetUint("pg.port"),
-				Host:     viper.GetString("pg.host"),
-				Username: viper.GetString("pg.username"),
-				Password: viper.GetString("pg.password"),
-				Database: viper.GetString("pg.database"),
-				Schema:   viper.GetString("pg.schema"),
-				SslMode:  viper.GetString("pg.sslmode"),
+				Port:     viper.GetUint("PG_PORT"),
+				Host:     viper.GetString("PG_HOST"),
+				Username: viper.GetString("PG_USERNAME"),
+				Password: viper.GetString("PG_PASSWORD"),
+				Database: viper.GetString("PG_DATABASE"),
+				Schema:   viper.GetString("PG_SCHEMA"),
+				SslMode:  viper.GetString("PG_SSLMODE"),
 			},
 		}
 	})
