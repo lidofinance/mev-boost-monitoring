@@ -45,7 +45,7 @@ func Read(ctx context.Context) (*Config, error) {
 		viper.AddConfigPath(".")
 		viper.SetConfigFile(".env")
 
-		// viper.AutomaticEnv()
+		viper.AutomaticEnv()
 		if viperErr := viper.ReadInConfig(); err != nil {
 			if _, ok := viperErr.(viper.ConfigFileNotFoundError); !ok {
 				err = viperErr
