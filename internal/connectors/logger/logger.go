@@ -4,10 +4,10 @@ import (
 	"os"
 	"sync"
 
-	"github.com/evalphobia/logrus_sentry"
 	"github.com/sirupsen/logrus"
 
 	"github.com/lidofinance/mev-boost-monitoring/internal/env"
+	"github.com/onrik/logrus/sentry"
 )
 
 var (
@@ -39,14 +39,20 @@ func New(cfg *env.AppConfig) (*logrus.Logger, error) {
 		logger.SetOutput(os.Stdout)
 
 		if cfg.SentryDsn != "" {
-			hook, hookErr := logrus_sentry.NewSentryHook(cfg.SentryDsn, []logrus.Level{
+			hook, sentryErr := sentry.NewHook(
+				sentry.Options{
+					Dsn:              cfg.SentryDsn,
+					AttachStacktrace: true,
+				},
 				logrus.PanicLevel,
 				logrus.FatalLevel,
 				logrus.ErrorLevel,
-			})
+				logrus.DebugLevel,
+				logrus.InfoLevel,
+			)
 
-			if hookErr != nil {
-				err = hookErr
+			if sentryErr != nil {
+				err = sentryErr
 				return
 			}
 

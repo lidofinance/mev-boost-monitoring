@@ -4,7 +4,10 @@ POSTGRESQL_URL := postgres://postgres:postgres@localhost:5433/master?sslmode=dis
 ### GO tools
 tools:
 	cd tools && go mod tidy && go mod vendor && go mod verify && go generate -tags tools
-.PHONY: tools	
+.PHONY: tools
+
+build:
+	go build ./cmd/mev-boost
 
 vendor:
 	go mod tidy && go mod vendor && go mod verify

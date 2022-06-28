@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/lidofinance/mev-boost-monitoring/internal/connectors/metrics"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -19,13 +20,15 @@ const (
 )
 
 type App struct {
+	Logger  *logrus.Logger
 	Metrics *metrics.Store
 	usecase *usecase
 	repo    *repository
 }
 
-func New(metrics *metrics.Store, usecase *usecase, repo *repository) *App {
+func New(log *logrus.Logger, metrics *metrics.Store, usecase *usecase, repo *repository) *App {
 	return &App{
+		Logger:  log,
 		Metrics: metrics,
 		usecase: usecase,
 		repo:    repo,

@@ -1,21 +1,24 @@
 package mev_boost
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lidofinance/mev-boost-monitoring/internal/transport/http/dto"
-
 	"github.com/lidofinance/mev-boost-monitoring/internal/pkg/mev_boost"
+	"github.com/lidofinance/mev-boost-monitoring/internal/transport/http/dto"
+	"github.com/lidofinance/mev-boost-monitoring/internal/utils/deps"
 )
 
 type Handler struct {
+	log   deps.Logger
 	mevUC mev_boost.Usecase
 }
 
-func New(mevUC mev_boost.Usecase) *Handler {
+func New(log deps.Logger, mevUC mev_boost.Usecase) *Handler {
 	return &Handler{
+		log:   log,
 		mevUC: mevUC,
 	}
 }
@@ -27,6 +30,8 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 	// Rate-Limiter - done
 	// Some Secret Key - for mvp - it's redundant
 	if err := c.ShouldBindJSON(&req); err != nil {
+		h.log.Error(`Could not bind json`, err)
+
 		c.JSON(http.StatusBadRequest, gin.H{
 			"msg": `ShouldBindJSON err`,
 			"err": err.Error(),
@@ -37,6 +42,8 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 
 	in, err := req.Validate()
 	if err != nil {
+		h.log.Error(`Request is invalid`, err)
+
 		c.JSON(http.StatusBadRequest, gin.H{
 			"msg": `Validation err`,
 			"err": err.Error(),
@@ -46,7 +53,8 @@ func (h *Handler) HandlerPost(c *gin.Context) {
 	}
 
 	if createErr := h.mevUC.Create(c, in); createErr != nil {
-		// TODO: log error
+		h.log.Error(fmt.Errorf(`could not store payload %w`, createErr))
+
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"msg": createErr.Error(),
 		})
